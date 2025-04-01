@@ -248,6 +248,7 @@ def __get_holo_data(holos) -> list:
                 print(f'\n{holos[i]['name']}: no link found')
         else:
             twin_name = holos[i]['name'].replace(' Abyssgard', '')
+            #TODO: HANDLE TWINS
             
             
             
