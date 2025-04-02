@@ -1,3 +1,5 @@
+./App/database/_pycache_/
 *.cache
 *.timestamp
 *.db
+*.pyc

@@ -71,7 +71,7 @@ def __load_cached_site(filepath, url) -> tuple:
             file.write(response.content)
         # save the timestamp of the last update to a file
         with open(filepath+'.timestamp', 'w') as file:
-            file.write(json.dumps(today))
+            file.write(json.dumps(date.today().strftime(r"%Y-%m-%d")))
          
         # return the BeautifulSoup object 
         return BeautifulSoup(response.content, 'html.parser'), True,'---- New site cached ----'
@@ -198,11 +198,13 @@ def __get_generation_data(generations) -> tuple:
 def __get_holo_data(holos) -> tuple:
     print("---- Loading holo data ----")
     for i in tqdm(range(len(holos)), bar_format='{l_bar}{bar:10}{r_bar}{bar:-10b}'):
+        #load the site and get the soup object
         soup, requested, msg = __load_cached_site(f'site_cache/holos/{holos[i]['name']}.cache', holos[i]['wiki_link'])
         if soup is None:
             print(msg)
             return holos, False
         
+        #get the infobox from the soup object
         infobox = soup.find('table', class_='infobox')
         
         #handle the case of fuwamoco twins 
@@ -212,6 +214,7 @@ def __get_holo_data(holos) -> tuple:
             infobox_row = soup.find(lambda tag: tag.name == 'th' and twin_name in tag.get_text())
             infobox = infobox_row.parent.parent if infobox_row else None
         
+        #extract the data from the infobox
         rows = infobox.find_all('tr')
     
         img_link = rows[1].find('a', class_= 'mw-file-description').get('href')
@@ -239,6 +242,8 @@ def __get_holo_data(holos) -> tuple:
         height = height_parent.find('td').get_text(strip=True) if height_parent else ''
         height = re.sub(r'\[.*?\]', '', height)
         height = re.sub(r'\(.*?\)', '', height)
+        height = re.sub(r' cm', 'cm', height)    
+        height = re.search(r'\d{3}cm', height).group(0) if re.search(r'\d{3}cm', height) else height
         if height == '':
             height = 'Unknown'
             #print(f'\n{holos[i]['name']}: no height found')
@@ -263,8 +268,6 @@ def __get_holo_data(holos) -> tuple:
             twt_link = 'Twitter closed'
             #print(f'\n{holos[i]['name']}: no link found')
             
-        
-
         overview_heading = soup.find('span', id='Overview').find_parent('h2')
         overview_paragraphs = []
         
@@ -289,6 +292,7 @@ def __get_holo_data(holos) -> tuple:
             overview = 'No overview found'
             #print(f'\n{holos[i]['name']}: no overview found')
 
+        #set all the values to the holo dictionary
         holos[i]['jp_name'] = jp_name
         holos[i]['height'] = height
         holos[i]['birthday'] = birthday
