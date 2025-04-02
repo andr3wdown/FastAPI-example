@@ -7,6 +7,15 @@ import json
 connection = sqlite3.connect('holobase.db')
 cursor = connection.cursor()
 
+def run_creation():
+    if __check_timestamp():
+        print("---- Database is up to date ----")
+    else:
+        print("---- Creating database ----")
+        __create_database()
+        __close_connection()
+        print("---- Database created ----")
+
 #create database
 def __create_database():
     generations, holos, success = get_data()
@@ -114,16 +123,4 @@ def __check_timestamp() -> bool:
     with open('holobase.timestamp', 'w') as file:
         file.write(json.dumps(date.today().strftime(r"%Y-%m-%d")))
         
-    return False
-    
-
-if __name__ == "__main__":
-    if __check_timestamp():
-        print("---- Database is up to date ----")
-    else:
-        print("---- Creating database ----")
-        __create_database()
-        __close_connection()
-        print("---- Database created ----")
-    
-    
+    return False 
