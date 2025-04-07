@@ -81,15 +81,17 @@ def __load_cached_site(filepath, url) -> tuple:
         content = file.read()
     return BeautifulSoup(content, 'html.parser'), False, '---- Cached site loaded ----'
     
- # scrapes the site and returns a list of generations and a list of holos
+ # scrapes the site and returns a list of generations and a list of holos and a success flag
 def __scrape_site() -> tuple:
     soup, requested, msg = __load_cached_site('site_cache/site.cache', wiki_url + members_url)
+    #if we made a request, sleep for the delay time
     if requested:
         sleep(request_delay)
     print(msg)
     if soup is None:
         return [], [], False, "Error: could not load cached site or fetch new data"
     
+    #parse the site and get the generations and holos
     try:
         generations, holos, success = __parse_initial_data(soup)
         if not success:
@@ -107,6 +109,7 @@ def __scrape_site() -> tuple:
         print(f"Error parsing data: {e}")
         return [], [], False, "Error: Could not parse data"
     
+    #return the generations and holos with the success flag
     return generations, holos, True, "Success: Data scraped successfully"
 
 # parses data from the members site and returns a list of generations and a list of holos
@@ -114,6 +117,7 @@ def __parse_initial_data(soup) -> tuple:
     generations = []
     holos = []
     
+    # go through the tables and get the data
     tables = soup.find_all('table', class_='wikitable')
     for table in tables[0:2]:
         categories = table.find_all('th')
@@ -137,9 +141,12 @@ def __parse_initial_data(soup) -> tuple:
             name = cells[0].get_text(strip=True)
             debut = cells[1].get_text(strip=True)
             
+            # handle fubuki's special case with generation
             if name == 'Shirakami Fubuki':
                 generation = 'hololive 1st Generation'
             
+            # check if the generation is already in the list
+            # if not, add it to the list
             if not any(gen['name'] == generation for gen in generations):
                 gen = {
                     'name': generation,
@@ -152,7 +159,9 @@ def __parse_initial_data(soup) -> tuple:
             link = cells[0].find('a').get('href')
             if link:
                 link = wiki_url + link
-                
+            
+            # create a dictionary for the holo member
+            # and add it to the list of holos
             holo = {
                 'name': name,
                 'debut': debut,
@@ -176,8 +185,6 @@ def __parse_initial_data(soup) -> tuple:
                 continue
                 
             holos.append(holo)
-            
-            
             
     return generations, holos, True
 

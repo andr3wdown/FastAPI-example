@@ -7,6 +7,7 @@ import json
 connection = sqlite3.connect('holobase.db')
 cursor = connection.cursor()
 
+#handle the database creation process
 def run_creation():
     if __check_timestamp():
         print("---- Database is up to date ----")
@@ -92,7 +93,7 @@ def __add_holos(holos):
     cursor.executemany(sql, values)
     connection.commit()
 
-#create tables  
+#create tables with creation scripts
 def __create_tables():
     query = __read_query_template('sql/create_generation.sql')  
     cursor.execute(query)
@@ -112,6 +113,7 @@ def __read_query_template(file_path) -> str:
 def __close_connection():
     connection.close()
  
+#check the timestamp, if it's not up to date return false
 def __check_timestamp() -> bool:
     now = date.today().strftime("%Y-%m")
     if os.path.exists('holobase.timestamp'):

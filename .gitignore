@@ -3,3 +3,4 @@
 *.timestamp
 *.db
 *.pyc
+*.key
