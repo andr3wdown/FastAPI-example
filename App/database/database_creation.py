@@ -115,7 +115,7 @@ def __close_connection():
  
 #check the timestamp, if it's not up to date return false
 def __check_timestamp() -> bool:
-    now = date.today().strftime("%Y-%m")
+    now = date.today().strftime(r"%Y-%m")
     if os.path.exists('holobase.timestamp'):
         with open('holobase.timestamp', 'r') as file:
             timestamp = json.loads(file.read())

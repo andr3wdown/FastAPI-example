@@ -1,6 +1,9 @@
-./App/database/_pycache_/
+./App/database/__pycache__/
+./TEST
 *.cache
 *.timestamp
 *.db
 *.pyc
 *.key
+api-tests.js
+index.html

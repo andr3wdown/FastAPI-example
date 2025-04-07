@@ -5,22 +5,20 @@ from fastapi import FastAPI, Security, HTTPException, status
 from fastapi.security import APIKeyHeader
 import os
 
-if __name__ == "__main__":
-    # Load environment variables from .env file
-    API_KEY = os.getenv("API_KEY")
-    API_KEY_NAME = 'API-KEY'
-    if not API_KEY:
-        raise ValueError("API_KEY environment variable is not set. Set it in your environment")
+# Load environment variables from .env file
+API_KEY = os.getenv("API_KEY")
+API_KEY_NAME = 'API-KEY'
+if not API_KEY:
+    raise ValueError("API_KEY environment variable is not set. Set it in your environment")
     
-    # Ensure the database is created before starting the app
-    run_creation()
+# Ensure the database is created before starting the app
+run_creation()
     
-    # Set up API key authentication
-    api_key_header_auth = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
-    # Start the FastAPI app
-    app = FastAPI(title="HololiveAPI", version="1.0.0")
-    print("---- HoloAPI started and running ----")
-
+# Set up API key authentication
+api_key_header_auth = APIKeyHeader(name=API_KEY_NAME, auto_error=False)
+# Start the FastAPI app
+app = FastAPI(title="HololiveAPI", version="1.0.0")
+print("---- HoloAPI started and running ----")
 async def get_api_key(api_key: str = Security(api_key_header_auth)):
     if api_key != API_KEY:
         return HTTPException(
@@ -30,11 +28,26 @@ async def get_api_key(api_key: str = Security(api_key_header_auth)):
         )
     return api_key
 
+
+
 @app.get("/test")
 async def read_root(api_key: str = Security(get_api_key)):
     return {
             "status": "access granted",
             "message": "API key is valid"
         }
+    
+@app.get("/holos/{name}")
+async def get_holos(api_key: str = Security(get_api_key)):
+    return {
+        "status": "access granted",
+        "message": "API key is valid"
+    }
+@app.get("/generations/{name}")
+async def get_generations(api_key: str = Security(get_api_key)):
+    return {
+        "status": "access granted",
+        "message": "API key is valid"
+    }
     
     

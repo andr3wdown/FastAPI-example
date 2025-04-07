@@ -309,7 +309,7 @@ def __get_holo_data(holos) -> tuple:
         holos[i]['twt_link'] = twt_link
         
         if requested and i != len(holos) - 1:
-            sleep(20)
+            sleep(request_delay)
                    
     return holos, True
 
