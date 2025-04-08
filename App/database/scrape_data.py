@@ -10,9 +10,9 @@ from datetime import date
 from bs4 import BeautifulSoup
 from tqdm import tqdm
 
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
 
 initialized = False
-
 wiki_url = 'https://hololive.wiki'
 members_url = '/wiki/Members'
 request_delay = 20 # seconds as instructed in the wiki robots.txt
@@ -20,12 +20,12 @@ request_delay = 20 # seconds as instructed in the wiki robots.txt
 # This function is used to initialize the script and check if the required directories exist.
 def __initialize() -> None:
     # check if all required directiories exists, if not create them
-    if not os.path.exists('site_cache'):
-        os.makedirs('site_cache')
-    if not os.path.exists('site_cache/generations'):
-        os.makedirs('site_cache/generations')
-    if not os.path.exists('site_cache/holos'):
-        os.makedirs('site_cache/holos')
+    if not os.path.exists(os.path.join(SCRIPT_DIR, 'site_cache')):
+        os.makedirs(os.path.join(SCRIPT_DIR, 'site_cache'))
+    if not os.path.exists(os.path.join(SCRIPT_DIR, 'site_cache', 'generations')):
+        os.makedirs(os.path.join(SCRIPT_DIR, 'site_cache', 'generations'))
+    if not os.path.exists(os.path.join(SCRIPT_DIR, 'site_cache', 'holos')):
+        os.makedirs(os.path.join(SCRIPT_DIR, 'site_cache', 'holos'))
     
     #set the initialized variable to True
     global initialized
@@ -47,13 +47,14 @@ def get_data() -> tuple:
 # checks if the site cache exists and if it is up to date if not it loads the site again and saves it to the cache
 # returns the BeautifulSoup object of the site
 def __load_cached_site(filepath, url) -> tuple:
+    filepath = os.path.join(SCRIPT_DIR, filepath)
     # check if the site was cached today and if not load it again
     today = date.today().strftime("%Y-%m")
     cached_today = False
     # check if the timestamp file exists
     if os.path.exists(filepath+'.timestamp'):
         # read the timestamp from the file
-        with open(filepath+'.timestamp', 'r') as file:
+        with open(filepath +'.timestamp', 'r') as file:
             timestamp = json.loads(file.read())
             # check if the site was updated today
             if today in timestamp:

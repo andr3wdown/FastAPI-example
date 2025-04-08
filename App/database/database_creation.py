@@ -3,8 +3,14 @@ from datetime import date
 import sqlite3
 import os
 import json
+
+#Get the directory of the current script for consistent file paths
+SCRIPT_DIR = os.path.dirname(os.path.abspath(__file__))
+DB_PATH = os.path.join(SCRIPT_DIR, 'holobase.db')
+TIMESTAMP_PATH = os.path.join(SCRIPT_DIR, 'holobase.timestamp')
+
 #connect to database
-connection = sqlite3.connect('holobase.db')
+connection = sqlite3.connect(DB_PATH)
 cursor = connection.cursor()
 
 #handle the database creation process
@@ -95,10 +101,10 @@ def __add_holos(holos):
 
 #create tables with creation scripts
 def __create_tables():
-    query = __read_query_template('sql/create_generation.sql')  
+    query = __read_query_template(os.path.join(SCRIPT_DIR, 'sql/create_generation.sql'))  
     cursor.execute(query)
     
-    query = __read_query_template('sql/create_holo.sql')
+    query = __read_query_template(os.path.join(SCRIPT_DIR, 'sql/create_holo.sql'))
     cursor.execute(query)
     
     connection.commit()
@@ -116,13 +122,13 @@ def __close_connection():
 #check the timestamp, if it's not up to date return false
 def __check_timestamp() -> bool:
     now = date.today().strftime(r"%Y-%m")
-    if os.path.exists('holobase.timestamp'):
-        with open('holobase.timestamp', 'r') as file:
+    if os.path.exists(TIMESTAMP_PATH):
+        with open(TIMESTAMP_PATH, 'r') as file:
             timestamp = json.loads(file.read())
             if now in timestamp:
                 return True
     
-    with open('holobase.timestamp', 'w') as file:
+    with open(TIMESTAMP_PATH, 'w') as file:
         file.write(json.dumps(date.today().strftime(r"%Y-%m-%d")))
         
     return False 
