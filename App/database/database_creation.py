@@ -21,7 +21,7 @@ def run_creation():
         print("---- Creating database ----")
         __create_database()
         __close_connection()
-        print("---- Database created ----")
+        print("---- Database created/updated ----")
 
 #create database
 def __create_database():

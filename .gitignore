@@ -1,5 +1,6 @@
 /App/__pycache__
 /App/database/__pycache__
+/App/database/site_cache
 /TEST
 *.cache
 *.timestamp

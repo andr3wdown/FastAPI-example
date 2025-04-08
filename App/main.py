@@ -1,14 +1,18 @@
+# run with: fastapi run main.py
+
 import sys
 sys.path.insert(1, 'database')
 from database.database_creation import run_creation
 import database.database_access as db_acess
 from fastapi import FastAPI, Security, HTTPException, status
 from fastapi.security import APIKeyHeader
+from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 import os
 import uvicorn
 
-# Load environment variables from .env file
+
+#IMPORTANT: Make sure to set the environment variable API_KEY in your environment before running the app.
 API_KEY = os.getenv("API_KEY")
 API_KEY_NAME = 'API-KEY'
 if not API_KEY:
@@ -33,6 +37,14 @@ async def lifespan(app: FastAPI):
 # Start the FastAPI app
 app = FastAPI(title="HololiveAPI", version="1.0.0", lifespan=lifespan)
 
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],  # Allows all origins
+    allow_credentials=True,
+    allow_methods=["*"],  # Allows all methods
+    allow_headers=["*"],  # Allows all headers
+)
+
 # check if the API key is valid
 # this function will be called before every endpoint that requires authentication
 async def get_api_key(api_key: str = Security(api_key_header_auth)):
@@ -51,12 +63,21 @@ async def read_root(api_key: str = Security(get_api_key)):
             "status": "access granted",
             "message": "API key is valid"
         }
-    
+
+@app.get("/holos")
+async def get_holos(api_key: str = Security(get_api_key)):
+    holos, success = db_acess.get_all_holos()
+    if not success or holos is None:
+        raise HTTPException(status_code=404, detail="No hololive members found.")
+    return {
+        "status": "success",
+        "data": holos
+    }
 
 @app.get("/holos/{name}")
-async def get_holos(name: str, api_key: str = Security(get_api_key)):
-    holo = db_acess.get_holo(name)
-    if holo is None:
+async def get_holo(name: str, api_key: str = Security(get_api_key)):
+    holo, success = db_acess.get_holo(name)
+    if not success or holo is None:
         raise HTTPException(status_code=404, detail=f"Can't find a hololive member with the name {name}.")
     return {
         "status": "success",
