@@ -74,11 +74,11 @@ async def get_holos(api_key: str = Security(get_api_key)):
         "data": holos
     }
 
-@app.get("/holos/{name}")
-async def get_holo(name: str, api_key: str = Security(get_api_key)):
-    holo, success = db_acess.get_holo(name)
+@app.get("/holos/{nameorid}")
+async def get_holo(nameorid: str, api_key: str = Security(get_api_key)):
+    holo, success = db_acess.get_holo(nameorid)
     if not success or holo is None:
-        raise HTTPException(status_code=404, detail=f"Can't find a hololive member with the name {name}.")
+        raise HTTPException(status_code=404, detail=f"Can't find a hololive member with the name {nameorid}.")
     return {
         "status": "success",
         "data": holo
@@ -94,11 +94,11 @@ async def get_generations(api_key: str = Security(get_api_key)):
         "data": generations
     }
 
-@app.get("/generations/{name}")
-async def get_generation(name: str, api_key: str = Security(get_api_key)):
-    generation, success = db_acess.get_generation(name)
+@app.get("/generations/{nameorid}")
+async def get_generation(nameorid: str, api_key: str = Security(get_api_key)):
+    generation, success = db_acess.get_generation(nameorid)
     if not success or generation is None:
-        raise HTTPException(status_code=404, detail=f"No generation with the name {name} found.")
+        raise HTTPException(status_code=404, detail=f"No generation with the name {nameorid} found.")
     return {
         "status": "success",
         "data": generation

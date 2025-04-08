@@ -11,9 +11,15 @@ column_names = { }
 def get_holo(name) -> tuple:
     __initialize_column_names()
     
-    name = __parse_name(name)
+    checked_category = 'EngName'
+    if is_integer(name):
+        name = int(name)
+        checked_category = 'HoloID'
+    else:
+        name = __parse_name(name)
+    
     try:
-        sql = '''SELECT * FROM HOLO WHERE EngName LIKE ?'''
+        sql = f'''SELECT * FROM HOLO WHERE {checked_category} LIKE ?'''
         holo, success = __get_single_result(sql, (name,), lambda result: __result_is_valid(result, len(column_names['holo']), 'holo'))
         if not success:
             return None, False
@@ -52,9 +58,15 @@ def get_all_holos() -> tuple:
 def get_generation(name) -> tuple:
     __initialize_column_names()
     
-    name = re.sub(r'[_]', ' ', name)
+    checked_category = 'Name'
+    if is_integer(name):
+        name = int(name)
+        checked_category = 'GenerationID'
+    else:
+        name = re.sub(r'[_]', ' ', name)
+        
     try:
-        sql = '''SELECT * FROM GENERATION WHERE Name LIKE ?'''
+        sql = f'''SELECT * FROM GENERATION WHERE {checked_category} LIKE ?'''
         generation, success = __get_single_result(sql, (name,), lambda result: __result_is_valid(result, len(column_names['generation']), 'generation'))
         if not success:
             return None, False
@@ -148,6 +160,14 @@ def __result_is_valid(result, expected_column_count, table) -> bool:
         print(f"Error: Number of columns in the {table} result does not match the expected number of columns.")
         return False
     return True
+
+# check if the string is an integer
+def is_integer(string):
+    try:
+        int(string)
+        return True
+    except ValueError:
+        return False
 
 
 # Remove any special characters or SQL injection attempts
