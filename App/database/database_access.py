@@ -42,13 +42,52 @@ def get_all_holos() -> tuple:
         if not success:
             return None, False
         
-        holos = [{"id": holo[0], "name": holo[1]} for holo in holos]
+        holos = [{"HoloID": holo[0], "EngName": holo[1]} for holo in holos]
         return holos, True
     
     except sqlite3.Error as e:
         print(f"Error executing query: {e}")
         return None, False
 
+def get_generation(name) -> tuple:
+    __initialize_column_names()
+    
+    name = re.sub(r'[_]', ' ', name)
+    try:
+        sql = '''SELECT * FROM GENERATION WHERE Name LIKE ?'''
+        generation, success = __get_single_result(sql, (name,), lambda result: __result_is_valid(result, len(column_names['generation']), 'generation'))
+        if not success:
+            return None, False
+        
+        sql = '''SELECT HoloID, EngName FROM HOLO WHERE GenerationID = ?'''
+        holos, success = __get_all_results(sql, (generation[0],))
+        if not success:
+            return None, False
+        
+        data = dict(zip(column_names['generation'], generation))
+        data['Members'] = [{"GenerationID": holo[0], "Name": holo[1]} for holo in holos]
+        
+        return data, True
+    
+    except sqlite3.Error as e:
+        print(f"Error executing query: {e}")
+        return None, False
+    
+def get_all_generations() -> tuple:
+    __initialize_column_names()
+    
+    try:
+        sql = '''SELECT GenerationID, Name FROM GENERATION'''
+        generations, success = __get_all_results(sql, ())
+        if not success:
+            return None, False
+        
+        generations = [{"GenerationID": generation[0], "Name": generation[1]} for generation in generations]
+        return generations, True
+    
+    except sqlite3.Error as e:
+        print(f"Error executing query: {e}")
+        return None, False
     
 # get data from the first matching row in a database using the sql command and parameters
 def __get_single_result(sql, params, check) -> tuple:

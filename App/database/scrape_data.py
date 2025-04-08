@@ -134,6 +134,7 @@ def __parse_initial_data(soup) -> tuple:
             
             generation = cells[2 if cells[2].find('a') else 4].get_text(strip=True)
             generation = re.sub(r'\(.*?\)', '', generation)
+            generation = generation.capitalize()
             
             # skip if member not from hololive
             if 'holostars' in generation or 'HOLOSTARS' in generation or 'Holostars' in generation:
