@@ -1,5 +1,6 @@
-./App/database/__pycache__/
-./TEST
+/App/__pycache__
+/App/database/__pycache__
+/TEST
 *.cache
 *.timestamp
 *.db
