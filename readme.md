@@ -8,7 +8,7 @@
 - [3. Screenshots](#3-screenshots)
 - [4. Status](#4-status)
 - [5. Credits](#5-credits)
-- [6. License](#6-licence)
+- [6. License](#6-license)
 
 ## 1. Overview
 
