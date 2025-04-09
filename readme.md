@@ -5,6 +5,10 @@
 
 - [1. Overview](#1-overview)
 - [2. How to use](#2-how-to-use)
+- [3. Screenshots](#3-screenshots)
+- [4. Status](#4-status)
+- [5. Credits](#5-credits)
+- [6. License](#6-licence)
 
 ## 1. Overview
 
@@ -20,8 +24,24 @@ Step 2: install requirements from requirements.txt
 
 Step 3: set API_KEY environment variable to a key of your choice
 
-Step 4: navigate to the App forlder and run using the command: fastapi run main.py
+Step 4: navigate to the App folder and run using the command: fastapi run main.py
 
 Step 5: wait for the data to be scraped and added to the database
 
 After step 5 your the API is now up and running!
+
+## 3. Screenshots
+
+![screenshot]()
+
+## 4. Status
+
+Project is complete
+No further changes planned for now
+
+## 5. Credits
+
+- [Chong Lee](https://github.com/andr3wdown)
+
+## 6. License
+
