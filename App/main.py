@@ -36,13 +36,15 @@ async def lifespan(app: FastAPI):
 # Start the FastAPI app
 app = FastAPI(title="HololiveAPI", version="1.0.0", lifespan=lifespan)
 
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],  # Allows all origins
-    allow_credentials=True,
-    allow_methods=["*"],  # Allows all methods
-    allow_headers=["*"],  # Allows all headers
-)
+is_dev = any('dev' in arg for arg in sys.argv)
+if is_dev:
+    app.add_middleware(
+        CORSMiddleware,
+        allow_origins=["*"],  # Allows all origins
+        allow_credentials=True,
+        allow_methods=["*"],  # Allows all methods
+        allow_headers=["*"],  # Allows all headers
+    )
 
 # check if the API key is valid
 # this function will be called before every endpoint that requires authentication

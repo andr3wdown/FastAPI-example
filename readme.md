@@ -25,3 +25,5 @@ Step 4: navigate to the App forlder and run using the command: fastapi run main.
 Step 5: wait for the data to be scraped and added to the database
 
 After step 5 your the API is now up and running!
+
+
