@@ -3,8 +3,8 @@
 
 ## Table of contents:
 
-- [Overview](#overview)
-- [How to use](#how-to-use)
+- [1. Overview](#1-overview)
+- [2. How to use](#2-how-to-use)
 
 ## 1. Overview
 
