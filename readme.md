@@ -32,7 +32,7 @@ After step 5 your the API is now up and running!
 
 ## 3. Screenshots
 
-![screenshot](https://i.ibb.co/4gmB3ndc/image.png)
+![screenshot]([https://i.ibb.co/4gmB3ndc/image.png](https://ibb.co/Z1Ly7pm3))
 
 ## 4. Status
 
