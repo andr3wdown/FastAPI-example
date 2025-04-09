@@ -31,9 +31,6 @@ Step 5: wait for the data to be scraped and added to the database
 
 After step 5 your the API is now up and running!
 
-<<<<<<< HEAD
-
-=======
 ## 3. Screenshots
 ![screenshot](https://i.ibb.co/4gmB3ndc/image.png)
 
@@ -48,4 +45,3 @@ No further changes planned for now
 
 ## 6. License
 MIT license @ [Chong Lee](https://github.com/andr3wdown)
->>>>>>> 217675abb60d7682719213cc1607435d59259949
