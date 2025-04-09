@@ -43,4 +43,4 @@ No further changes planned for now
 - [Chong Lee](https://github.com/andr3wdown)
 
 ## 6. License
-- MIT license @ [Chong Lee](https://github.com/andr3wdown)
+MIT license @ [Chong Lee](https://github.com/andr3wdown)
