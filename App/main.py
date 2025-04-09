@@ -9,7 +9,6 @@ from fastapi.security import APIKeyHeader
 from fastapi.middleware.cors import CORSMiddleware
 from contextlib import asynccontextmanager
 import os
-import uvicorn
 
 
 #IMPORTANT: Make sure to set the environment variable API_KEY in your environment before running the app.
@@ -64,6 +63,7 @@ async def read_root(api_key: str = Security(get_api_key)):
             "message": "API key is valid"
         }
 
+#endpoint to get all hololive members
 @app.get("/holos/")
 async def get_holos(api_key: str = Security(get_api_key)):
     holos, success = db_acess.get_all_holos()
@@ -74,6 +74,7 @@ async def get_holos(api_key: str = Security(get_api_key)):
         "data": holos
     }
 
+#endpoint to get a specific hololive member by name or ID
 @app.get("/holos/{nameorid}")
 async def get_holo(nameorid: str, api_key: str = Security(get_api_key)):
     holo, success = db_acess.get_holo(nameorid)
@@ -84,6 +85,7 @@ async def get_holo(nameorid: str, api_key: str = Security(get_api_key)):
         "data": holo
     }
 
+#endpoint to get all generations
 @app.get("/generations/")
 async def get_generations(api_key: str = Security(get_api_key)):
     generations, success = db_acess.get_all_generations()
@@ -93,7 +95,7 @@ async def get_generations(api_key: str = Security(get_api_key)):
         "status": "success",
         "data": generations
     }
-
+#endpoint to get a specific generation by name or ID
 @app.get("/generations/{nameorid}")
 async def get_generation(nameorid: str, api_key: str = Security(get_api_key)):
     generation, success = db_acess.get_generation(nameorid)

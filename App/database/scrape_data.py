@@ -190,6 +190,7 @@ def __parse_initial_data(soup) -> tuple:
             
     return generations, holos, True
 
+#takes a list of generations and loads the data from the wiki page
 def __get_generation_data(generations) -> tuple:
     print("---- Loading generation data ----")
     for i in tqdm(range(len(generations)), bar_format='{l_bar}{bar:10}{r_bar}{bar:-10b}'):

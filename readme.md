@@ -1,0 +1,1 @@
+<h1>Hololive API | FastAPI example</h1>
