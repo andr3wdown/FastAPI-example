@@ -27,6 +27,7 @@ Step 3: set API_KEY environment variable to a key of your choice
 Step 4: navigate to the App folder and run using the command: fastapi run main.py
 
 Step 5: wait for the data to be scraped and added to the database
+(NOTE: this can take quite long as the wiki we're scraping from has a 20s mandated delay in their robots.txt - avg runtime is ~35min the first time)
 
 After step 5 your the API is now up and running!
 
